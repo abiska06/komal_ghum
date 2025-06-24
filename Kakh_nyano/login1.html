@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Health Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f7f4ef 0%, #f7f4ef 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+    }
+
+    
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo h1 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .logo p {
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      transition: color 0.3s ease;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #f8f9fa;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      background-color: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input.error {
+      border-color: #e74c3c;
+      background-color: #fdf2f2;
+    }
+
+    .form-group input.success {
+      border-color: #27ae60;
+      background-color: #f2fdf5;
+    }
+
+    .error-text {
+      color: #e74c3c;
+      font-size: 0.875rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #7f8c8d;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    .password-toggle:hover {
+      color: #2c3e50;
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .remember-me input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .remember-me label {
+      font-size: 0.9rem;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .forgot-password {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg,  #e2856e 0%, #e2856e  100%);
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-loading {
+      color: transparent;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+     /* .divider {
+      text-align: center;
+      margin: 25px 0;
+      color: #7f8c8d;
+      position: relative;
+    }  */
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #e1e8ed;
+    }
+
+    .divider span {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 0 20px;
+    }
+
+    .auth-links {
+      text-align: center;
+    }
+
+    .auth-links a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .auth-links a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .alert-error {
+      background-color: #fdf2f2;
+      color: #e74c3c;
+      border: 1px solid #f5b7b1;
+    }
+
+    .alert-success {
+      background-color: #f2fdf5;
+      color: #27ae60;
+      border: 1px solid #a9dfbf;
+    }
+
+    .login-attempts {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .auth-container {
+        padding: 30px 20px;
+        margin: 10px;
+      }
+
+      .logo h1 {
+        font-size: 2rem;
+      }
+
+      .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="logo">
+      <h1>Nyano Kakh</h1>
+      <!-- <p></p> -->
+    </div>
+
+    <div id="alertMessage" class="alert"></div>
+    <div id="loginAttempts" class="login-attempts"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+        <div class="error-text" id="emailError"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div style="position: relative;">
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+          <span class="password-toggle" id="passwordToggle">👁️</span>
+        </div>
+        <div class="error-text" id="passwordError"></div>
+      </div>
+
+      <div class="form-options">
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMe" name="rememberMe">
+          <label for="rememberMe">Remember me</label>
+        </div>
+        <a href="forgotpassword.html" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-primary">
+        Sign In
+      </button>
+    </form>
+
+    <div class="divider" style="text-align: center;">
+  <span>Don't have an account?</span>
+</div>
+
+    <div class="auth-links">
+      <a href="signup.html">Create a new account</a>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCANb9a0-6_C55qeZ-YY39tqB5B79cZ0BE",
+      authDomain: "nyano-kakh.firebaseapp.com",
+      databaseURL: "https://nyano-kakh-default-rtdb.firebaseio.com",
+      projectId: "nyano-kakh",
+      storageBucket: "nyano-kakh.firebasestorage.app",
+      messagingSenderId: "1073797907279",
+      appId: "1:1073797907279:web:7ecbabb467bc7ba8b17b3a",
+      measurementId: "G-9Y9V54HVKW"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const passwordToggle = document.getElementById('passwordToggle');
+    const rememberMe = document.getElementById('rememberMe');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertMessage = document.getElementById('alertMessage');
+    const loginAttempts = document.getElementById('loginAttempts');
+
+    // Error elements
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+
+    // Login attempt tracking
+    let failedAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
+    let lastAttemptTime = parseInt(localStorage.getItem('lastAttemptTime') || '0');
+    const maxAttempts = 5;
+    const lockoutDuration = 15 * 60 * 1000; // 15 minutes
+
+    // Utility functions
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function showError(inputElement, errorElement, message) {
+      inputElement.classList.add('error');
+      inputElement.classList.remove('success');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    function showSuccess(inputElement) {
+      inputElement.classList.remove('error');
+      inputElement.classList.add('success');
+    }
+
+    function hideError(inputElement, errorElement) {
+      inputElement.classList.remove('error');
+      errorElement.style.display = 'none';
+    }
+
+    function showAlert(message, type = 'error') {
+      alertMessage.textContent = message;
+      alertMessage.className = `alert alert-${type}`;
+      alertMessage.style.display = 'block';
+      alertMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideAlert() {
+      alertMessage.style.display = 'none';
+    }
+
+    function checkAccountLockout() {
+      const currentTime = Date.now();
+      const timeSinceLastAttempt = currentTime - lastAttemptTime;
+
+      if (failedAttempts >= maxAttempts && timeSinceLastAttempt < lockoutDuration) {
+        const remainingTime = Math.ceil((lockoutDuration - timeSinceLastAttempt) / 60000);
+        loginAttempts.textContent = `Account temporarily locked due to multiple failed attempts. Try again in ${remainingTime} minutes.`;
+        loginAttempts.style.display = 'block';
+        submitBtn.disabled = true;
+        return true;
+      } else if (timeSinceLastAttempt >= lockoutDuration) {
+        // Reset attempts after lockout period
+        failedAttempts = 0;
+        localStorage.removeItem('loginAttempts');
+        localStorage.removeItem('lastAttemptTime');
+        loginAttempts.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+
+      if (failedAttempts > 0 && failedAttempts < maxAttempts) {
+        const remaining = maxAttempts - failedAttempts;
+        loginAttempts.textContent = `${remaining} login attempts remaining before temporary lockout.`;
+        loginAttempts.style.display = 'block';
+      }
+
+      return false;
+    }
+
+    function recordFailedAttempt() {
+      failedAttempts++;
+      lastAttemptTime = Date.now();
+      localStorage.setItem('loginAttempts', failedAttempts.toString());
+      localStorage.setItem('lastAttemptTime', lastAttemptTime.toString());
+    }
+
+    function resetFailedAttempts() {
+      failedAttempts = 0;
+      localStorage.removeItem('loginAttempts');
+      localStorage.removeItem('lastAttemptTime');
+      loginAttempts.style.display = 'none';
+    }
+
+    // Password toggle functionality
+    passwordToggle.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    // Real-time validation
+    emailInput.addEventListener('input', function() {
+      const email = this.value.trim();
+      if (email.length === 0) {
+        hideError(this, emailError);
+      } else if (!validateEmail(email)) {
+        showError(this, emailError, 'Please enter a valid email address');
+      } else {
+        hideError(this, emailError);
+        showSuccess(this);
+      }
+    });
+
+    passwordInput.addEventListener('input', function() {
+      const password = this.value;
+      if (password.length === 0) {
+        hideError(this, passwordError);
+      } else if (password.length < 6) {
+        showError(this, passwordError, 'Password must be at least 6 characters long');
+      } else {
+        hideError(this, passwordError);
+        showSuccess(this);
+      }
+    });
+
+    // Auto-fill remembered credentials
+    window.addEventListener('load', function() {
+      const rememberedEmail = localStorage.getItem('rememberedEmail');
+      if (rememberedEmail) {
+        emailInput.value = rememberedEmail;
+        rememberMe.checked = true;
+      }
+      
+      // Check for account lockout
+      checkAccountLockout();
+    });
+
+    // Form submission
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      hideAlert();
+
+      // Check if account is locked
+      if (checkAccountLockout()) {
+        return;
+      }
+
+      // Get form values
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      // Validate fields
+      let isValid = true;
+
+      if (!validateEmail(email)) {
+        showError(emailInput, emailError, 'Please enter a valid email address');
+        isValid = false;
+      }
+
+      if (password.length < 6) {
+        showError(passwordInput, passwordError, 'Password must be at least 6 characters long');
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.classList.add('btn-loading');
+
+      try {
+        // Sign in with Firebase Auth
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // Reset failed attempts on successful login
+        resetFailedAttempts();
+
+        // Handle remember me functionality
+        if (rememberMe.checked) {
+          localStorage.setItem('rememberedEmail', email);
+        } else {
+          localStorage.removeItem('rememberedEmail');
+        }
+
+        // Update last login time in database
+        await database.ref('users/' + user.uid).update({
+          lastLogin: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        // Show success message
+        showAlert('Login successful! Redirecting...', 'success');
+
+        // Redirect to dashboard after 1.5 seconds
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+
+      } catch (error) {
+        console.error('Login error:', error);
+        
+        // Record failed attempt
+        recordFailedAttempt();
+        
+        // Handle specific Firebase errors
+        let errorMessage = 'Login failed. Please check your credentials and try again.';
+        
+        switch (error.code) {
+          case 'auth/user-not-found':
+            errorMessage = 'No account found with this email address. Please check your email or create a new account.';
+            showError(emailInput, emailError, 'Account not found');
+            break;
+          case 'auth/wrong-password':
+            errorMessage = 'Incorrect password. Please try again or reset your password.';
+            showError(passwordInput, passwordError, 'Incorrect password');
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Please enter a valid email address.';
+            showError(emailInput, emailError, 'Invalid email format');
+            break;
+          case 'auth/user-disabled':
+            errorMessage = 'This account has been disabled. Please contact support.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Too many failed login attempts. Please wait a moment before trying again.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Network error. Please check your internet connection and try again.';
+            break;
+          case 'auth/invalid-credential':
+            errorMessage = 'Invalid login credentials. Please check your email and password.';
+            break;
+        }
+        
+        showAlert(errorMessage, 'error');
+        
+        // Check if we should show lockout warning
+        checkAccountLockout();
+        
+      } finally {
+        // Reset loading state
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('btn-loading');
+      }
+    });
+
+    // Check if user is already logged in
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is already logged in, redirect to dashboard
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Handle authentication persistence
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .catch((error) => {
+        console.error('Auth persistence error:', error);
+      });
+  </script>
+</body>
+</html>

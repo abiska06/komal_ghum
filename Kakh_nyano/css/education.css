@@ -1,0 +1,61 @@
+/* Education Page Specific Styles */
+
+/* Category Tabs */
+.category-tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+  }
+  
+  .category-tab {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+  }
+  
+  .category-tab.active {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+  }
+  
+  .category-tab:hover:not(.active) {
+    background-color: var(--light-gray);
+  }
+  
+  /* Resources Grid */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+  
+  /* Resource Card */
+  .resource-card {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  
+  .resource-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .resource-thumbnail {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+  }
+  
+  .resource-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
